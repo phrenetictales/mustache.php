@@ -22,6 +22,22 @@ class Mustache_Test_Loader_FilesystemLoaderTest extends PHPUnit_Framework_TestCa
         $this->assertEquals('beta contents', $loader->load('beta.ms'));
     }
 
+    public function testTrailingSlashes()
+    {
+        $baseDir = dirname(__FILE__).'/../../../fixtures/templates/';
+        $loader = new Mustache_Loader_FilesystemLoader($baseDir);
+        $this->assertEquals('one contents', $loader->load('one'));
+    }
+
+    public function testConstructorWithProtocol()
+    {
+        $baseDir = realpath(dirname(__FILE__).'/../../../fixtures/templates');
+
+        $loader = new Mustache_Loader_FilesystemLoader('file://' . $baseDir, array('extension' => '.ms'));
+        $this->assertEquals('alpha contents', $loader->load('alpha'));
+        $this->assertEquals('beta contents', $loader->load('beta.ms'));
+    }
+
     public function testLoadTemplates()
     {
         $baseDir = realpath(dirname(__FILE__).'/../../../fixtures/templates');
